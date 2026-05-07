@@ -1,0 +1,42 @@
+# ──────────────────────────────────────────────
+#  BookWise Recommender  –  Central Config File
+# ──────────────────────────────────────────────
+
+data:
+  interactions_path: "data/user_interactions.csv"
+  books_path:        "data/books_catalog.csv"
+  test_split:        0.20        # 20 % held-out evaluation set
+  random_seed:       42
+
+collaborative:
+  algorithm:         "SVD"       # SVD | NMF
+  n_factors:         50
+  n_epochs:          30
+  lr_all:            0.005
+  reg_all:           0.02
+  min_rating:        1.0
+  max_rating:        5.0
+
+content_based:
+  max_features:      5000        # TF-IDF vocabulary cap
+  ngram_range:       [1, 2]      # unigrams + bigrams
+  text_fields:                   # columns to combine for description
+    - "title"
+    - "genre"
+    - "author"
+    - "description"
+  similarity_top_k:  50          # nearest neighbours to cache
+
+hybrid:
+  collab_weight:     0.60        # α  (content weight = 1 - α)
+  content_weight:    0.40
+  top_n:             10          # final recommendations returned
+
+evaluation:
+  k_values:          [5, 10]     # Precision@K, Recall@K, NDCG@K
+  relevance_threshold: 4.0       # ratings ≥ this count as "relevant"
+
+api:
+  host:              "0.0.0.0"
+  port:              8000
+  reload:            false
